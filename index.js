@@ -94,8 +94,9 @@
   }
 
   DOM.downloadPxonButton.onclick = function () {
+    const name = DOM.uploadImageInput.files[0].name.split('.')[0]
     DOM.downloadPxonButton.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.pxon))
-    DOM.downloadPxonButton.setAttribute('download', 'pxon.json')
+    DOM.downloadPxonButton.setAttribute('download', `${name}.json`)
   }
 
   DOM.pixelSizeInput.oninput = function (e) {
