@@ -14,6 +14,8 @@
     downloadPxonButton: document.getElementById('download-pxon')
   }
 
+  var PXON = ''
+
   const generatePXON = function (image) {
     // draw image on a canvas
     const tempCanvas = document.createElement('canvas')
@@ -28,7 +30,7 @@
     var pxonWorker = new Worker('pxon.js')
 
     pxonWorker.onmessage = function (message) {
-      localStorage.pxon = JSON.stringify(message.data.pxon)
+      PXON = arrayBufferToStr(message.data)
       DOM.generatePxonButton.classList.add('hidden')
       DOM.generatePxonButton.innerText = 'Generate PXON'
       DOM.copyPxonButton.classList.remove('hidden')
@@ -64,6 +66,17 @@
     }
   }
 
+  const arrayBufferToStr = function (buf) {
+    var uintArray = new Uint16Array(buf)
+    var str = ''
+
+    uintArray.forEach(function (byte) {
+      str += String.fromCharCode(byte)
+    })
+
+    return str
+  }
+
   const resetButtons = function () {
     DOM.generatePxonButton.innerText = 'Generate PXON'
     DOM.generatePxonButton.classList.remove('hidden')
@@ -74,7 +87,7 @@
   // event listeners
   document.addEventListener('copy', function (e) {
     e.preventDefault()
-    e.clipboardData.setData('text/plain', localStorage.pxon)
+    e.clipboardData.setData('text/plain', PXON)
   })
 
   DOM.generatePxonButton.onclick = function () {
@@ -95,7 +108,7 @@
 
   DOM.downloadPxonButton.onclick = function () {
     const name = DOM.uploadImageInput.files[0].name.split('.')[0]
-    DOM.downloadPxonButton.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(localStorage.pxon))
+    DOM.downloadPxonButton.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(PXON))
     DOM.downloadPxonButton.setAttribute('download', `${name}.json`)
   }
 

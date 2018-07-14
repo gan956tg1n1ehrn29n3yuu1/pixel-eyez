@@ -12,6 +12,16 @@ onmessage = function (message) {
     return `rgb(${red}, ${green}, ${blue})`
   }
 
+  const strToArrayBuffer = function (str) {
+    var buf = new ArrayBuffer(str.length * 2) // 2 bytes for each char
+    var bufView = new Uint16Array(buf)
+
+    for (var i = 0, strLen = str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i)
+    }
+    return buf
+  }
+
   var pxon = {
     exif: {
       datetime : new Date()
@@ -33,5 +43,9 @@ onmessage = function (message) {
       })
     }
   }
-  postMessage({pxon})
+
+  // use a Transferable object instead of string to handle big images
+  var str =  JSON.stringify(pxon)
+  var buf = strToArrayBuffer(str)
+  postMessage(buf, [buf])
 }
