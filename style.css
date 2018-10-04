@@ -177,6 +177,14 @@ label[for="pixel-size-input"] {
   display: none;
 }
 
+.desktop-text {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  display: initial;
+}
+
 .spinner:after {
   display: block;
   content: '⋯';
