@@ -199,3 +199,11 @@ label[for="pixel-size-input"] {
   50% { content: '⋮'; }
   75% { content: '⋰'; }
 }
+
+::-moz-selection {
+  background: violet;
+}
+
+::selection {
+  background: violet;
+}
